@@ -134,6 +134,102 @@ def evaluate_model_across_sites(
     return results
 
 
+# %% Evaluate in a whole
+def tune_model_with_optuna_whole(
+    model_class,
+    X_train,
+    y_train,
+    hatdata,
+    top_vars,
+    data,
+    param_ranges,
+    fixed_params=None,
+    n_trials=60,
+):
+    input_dim = X_train.shape[1]
+    fixed_params = fixed_params or {}
+
+    def objective(trial):
+        params = fixed_params.copy()
+        for param_name, config in param_ranges.items():
+            if config["type"] == "int":
+                params[param_name] = trial.suggest_int(
+                    param_name,
+                    config["low"],
+                    config["high"],
+                    step=config.get("step", 1),
+                )
+            elif config["type"] == "float":
+                params[param_name] = trial.suggest_float(
+                    param_name,
+                    config["low"],
+                    config["high"],
+                    log=config.get("log", False),
+                )
+
+        # For faster tuning: use fewer epochs
+        short_params = {k: v for k, v in params.items() if k not in ["kappa"]}
+        if "num_epochs" in short_params:
+            short_params["num_epochs"] = 300
+
+        try:
+            model = model_class(input_dim=input_dim, num_classes=4, **short_params)
+        except TypeError as e:
+            print("Failed to init model with params:", short_params)
+            raise e
+
+        dro_train_args = {k: v for k, v in params.items() if k in ["kappa"]}
+
+        if isinstance(model, DROMethod):
+            model.train(X_train, y_train, **dro_train_args)
+        else:
+            model.train(X_train, y_train)
+
+        # Evaluate on hatdata
+        X_val = hatdata[top_vars].values
+        y_val = hatdata["y_{t+1}"].values
+        val_auc, _ = model.evaluate(X_val, y_val)
+        return val_auc
+
+    # Start Optuna tuning
+    optuna.logging.set_verbosity(optuna.logging.WARNING)
+    study = optuna.create_study(direction="maximize")
+    study.optimize(objective, n_trials=n_trials)
+
+    # Best parameters after tuning
+    final_params = {**fixed_params, **study.best_params}
+    final_dro_args = {k: v for k, v in final_params.items() if k in ["kappa"]}
+
+    try:
+        final_model = model_class(
+            input_dim=input_dim,
+            num_classes=4,
+            **{k: v for k, v in final_params.items() if k not in ["kappa"]},
+        )
+    except TypeError as e:
+        print("Failed to init final model with params:", final_params)
+        raise e
+
+    if isinstance(final_model, DROMethod):
+        final_model.train(X_train, y_train, **final_dro_args)
+    else:
+        final_model.train(X_train, y_train)
+
+    # Evaluate on the whole data
+    X_full = data[top_vars].values
+    y_full = data["y_{t+1}"].values
+    full_auc, full_probs = final_model.evaluate(X_full, y_full)
+
+    print("[Final Results Summary]")
+    print("Best Validation AUC:", study.best_value)
+    print("Best Parameters:", study.best_params)
+    print("Final Whole Test AUC:", full_auc)
+
+    results = {"auc_all": full_auc, "prob_all": full_probs, "y_true": y_full}
+
+    return (final_model, results), study
+
+
 # %% Unified Optuna tuning framework
 def tune_model_with_optuna(
     model_class,
@@ -170,7 +266,7 @@ def tune_model_with_optuna(
 
         short_params = {k: v for k, v in params.items() if k not in ["kappa"]}
         if "num_epochs" in short_params:
-            short_params["num_epochs"] = 500
+            short_params["num_epochs"] = 300
 
         try:
             filtered_params = {
@@ -257,9 +353,7 @@ class DROMethod(ModelTrainer):
 
             y_onehot = torch.eye(logits.size(1))[y_train_tensor.view(-1).long()]
             true_logits = torch.sum(y_onehot * logits, dim=1)
-            max_other_logits = torch.max(
-                (1 - y_onehot) * logits - 1e9 * y_onehot, dim=1
-            )[0]
+            max_other_logits = torch.max((1 - y_onehot) * logits, dim=1)[0]
             margins = true_logits - max_other_logits - lambda_param * kappa
 
             label_uncertainty_term = torch.relu(margins).mean()
