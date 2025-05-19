@@ -12,29 +12,37 @@ import optuna
 # ======================================
 # 1. LSTM Network
 # ======================================
-class LSTMNetwork(nn.Module):
+class RNNNetwork(nn.Module):
     def __init__(
-        self, input_dim, hidden_dim=64, num_classes=4, num_layers=2, dropout=0.3
+        self, input_dim, hidden_dim=64, num_classes=4, num_layers=1, dropout=0.0
     ):
         super().__init__()
-        self.lstm = nn.LSTM(
+        self.rnn = nn.RNN(
             input_dim,
             hidden_dim,
             num_layers,
             batch_first=True,
-            dropout=dropout if num_layers > 1 else 0.0,
+            nonlinearity="tanh",  # 默认就是 tanh
         )
         self.fc = nn.Linear(hidden_dim, num_classes)
 
     def forward(self, x, lengths):
-        # Pack padded sequence
         packed = nn.utils.rnn.pack_padded_sequence(
             x, lengths.cpu(), batch_first=True, enforce_sorted=False
         )
-        packed_out, _ = self.lstm(packed)
-        out, _ = nn.utils.rnn.pad_packed_sequence(packed_out, batch_first=True)
-        out = self.fc(out)
-        return out
+        packed_out, _ = self.rnn(packed)
+
+        packed_out_data = packed_out.data  # (total_valid_steps, hidden_dim)
+        fc_out_data = self.fc(packed_out_data)  # (total_valid_steps, num_classes)
+
+        packed_fc_out = nn.utils.rnn.PackedSequence(
+            data=fc_out_data,
+            batch_sizes=packed_out.batch_sizes,
+            sorted_indices=packed_out.sorted_indices,
+            unsorted_indices=packed_out.unsorted_indices,
+        )
+
+        return packed_fc_out
 
 
 # ======================================
@@ -50,74 +58,69 @@ class LSTMTrainer:
         hidden_dim=64,
         dropout=0.3,
     ):
-        self.model = LSTMNetwork(input_dim, hidden_dim, num_classes, 2, dropout)
+        # Use GPU if available
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+        # Define LSTM model and move it to device
+        self.model = RNNNetwork(input_dim, hidden_dim, num_classes, 2, dropout).to(
+            self.device
+        )
         self.optimizer = optim.Adam(self.model.parameters(), lr=learning_rate)
         self.num_epochs = num_epochs
 
     def train(self, train_loader):
         self.model.train()
-        device = next(self.model.parameters()).device
 
         for X_batch, y_batch, lengths, _ in train_loader:
-            X_batch, y_batch, lengths = (
-                X_batch.to(device),
-                y_batch.to(device),
-                lengths.to(device),
-            )
+            X_batch = X_batch.to(self.device)
+            y_batch = y_batch.to(self.device)
+            lengths = lengths.to(self.device)
+
             self.optimizer.zero_grad()
 
-            logits = self.model(X_batch, lengths)
-            logits_flat = logits.view(-1, logits.size(-1))
-            y_flat = y_batch.view(-1)
+            logits = self.model(X_batch, lengths)  # logits is PackedSequence
+            logits_flat = logits.data  # <-- just take data
 
-            loss = F.cross_entropy(logits_flat, y_flat.long(), ignore_index=-100)
+            loss = F.cross_entropy(logits_flat, y_batch.long())
+
             loss.backward()
-
-            # Apply gradient clipping to stabilize training
             torch.nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=1.0)
             self.optimizer.step()
 
     def evaluate(self, loader):
         self.model.eval()
-        device = next(self.model.parameters()).device
         all_probs, all_targets, all_subject_ids = [], [], []
 
         with torch.no_grad():
             for X_batch, y_batch, lengths, subject_ids in loader:
-                X_batch, y_batch, lengths = (
-                    X_batch.to(device),
-                    y_batch.to(device),
-                    lengths.to(device),
-                )
+                X_batch = X_batch.to(self.device)
+                y_batch = y_batch.to(self.device)
+                lengths = lengths.to(self.device)
 
-                logits = self.model(X_batch, lengths)
-                probs = F.softmax(logits, dim=-1)
+                logits = self.model(X_batch, lengths)  # logits is PackedSequence
+                logits_flat = logits.data
 
-                all_probs.append(probs.cpu())
+                probs_flat = F.softmax(logits_flat, dim=-1)
+
+                all_probs.append(probs_flat.cpu())
                 all_targets.append(y_batch.cpu())
                 all_subject_ids.extend(subject_ids)
 
-        all_probs = torch.cat(all_probs, dim=0)  # (batch, seq_len, num_classes)
-        all_targets = torch.cat(all_targets, dim=0)  # (batch, seq_len)
+        all_probs = torch.cat(all_probs, dim=0)
+        all_targets = torch.cat(all_targets, dim=0)
 
-        # Extract probabilities for class 3
-        probs_class3 = all_probs[:, :, 3].reshape(-1)  # (batch*seq_len,)
-        targets_flat = all_targets.reshape(-1)  # (batch*seq_len,)
+        probs_class3 = all_probs[:, 3]
+        targets_flat = all_targets
 
-        # Only consider valid positions (not padding)
-        valid_mask = targets_flat != -100
-        valid_probs = probs_class3[valid_mask]
-        valid_targets = targets_flat[valid_mask]
-
-        if valid_targets.numel() == 0:
+        if targets_flat.numel() == 0:
             auc_score = np.nan
         else:
             auc_score = roc_auc_score(
-                (valid_targets == 3).numpy(),  # Positive class is label 3
-                valid_probs.numpy(),
+                (targets_flat == 3).numpy(),
+                probs_class3.numpy(),
             )
 
-        return auc_score, valid_probs.numpy(), all_subject_ids, valid_targets.numpy()
+        return auc_score, probs_class3.numpy(), all_subject_ids, targets_flat.numpy()
 
 
 # ======================================
@@ -134,28 +137,29 @@ class RegularizationLSTMMethod(LSTMTrainer):
 
     def train(self, train_loader):
         self.model.train()
-        device = next(self.model.parameters()).device
 
         for X_batch, y_batch, lengths, _ in train_loader:
-            X_batch, y_batch, lengths = (
-                X_batch.to(device),
-                y_batch.to(device),
-                lengths.to(device),
-            )
+            # Move to device
+            X_batch = X_batch.to(self.device)
+            y_batch = y_batch.to(self.device)
+            lengths = lengths.to(self.device)
+
             self.optimizer.zero_grad()
 
             logits = self.model(X_batch, lengths)
-            logits_flat = logits.view(-1, logits.size(-1))
-            y_flat = y_batch.view(-1)
+            logits_flat = logits.data
 
-            loss = F.cross_entropy(logits_flat, y_flat.long(), ignore_index=-100)
+            loss = F.cross_entropy(logits_flat, y_batch.long())
+
+            # L2 regularization
             l2_reg = self.lambda_val * sum(
                 p.pow(2).sum() for p in self.model.parameters()
             )
             loss += l2_reg
-            loss.backward()
 
-            torch.nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=1.0)
+            # Backpropagation
+            loss.backward()
+            torch.nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=5.0)
             self.optimizer.step()
 
 
@@ -168,57 +172,62 @@ class DROLSTMMethod(LSTMTrainer):
 
     def train(self, train_loader):
         self.model.train()
-        device = next(self.model.parameters()).device
 
+        # Define an adaptive lambda parameter for DRO
         lambda_param_raw = nn.Parameter(
-            torch.tensor(1.0, device=device, requires_grad=True)
+            torch.tensor(1.0, device=self.device, requires_grad=True)
         )
         optimizer_lambda = optim.Adam(
             [lambda_param_raw], lr=self.optimizer.param_groups[0]["lr"] * 0.1
         )
 
         for X_batch, y_batch, lengths, _ in train_loader:
-            X_batch, y_batch, lengths = (
-                X_batch.to(device),
-                y_batch.to(device),
-                lengths.to(device),
-            )
+            # Move to device
+            X_batch = X_batch.to(self.device)
+            y_batch = y_batch.to(self.device)
+            lengths = lengths.to(self.device)
+
             self.optimizer.zero_grad()
             optimizer_lambda.zero_grad()
 
             logits = self.model(X_batch, lengths)
-            logits_flat = logits.view(-1, logits.size(-1))
-            y_flat = y_batch.view(-1)
+            logits_flat = logits.data
 
-            loss = F.cross_entropy(logits_flat, y_flat.long(), ignore_index=-100)
+            loss = F.cross_entropy(logits_flat, y_batch.long())
 
+            # DRO-specific terms
             l2_norm = torch.sqrt(sum(p.pow(2).sum() for p in self.model.parameters()))
             lambda_param = torch.exp(lambda_param_raw)
 
-            valid_mask = y_flat != -100
-            if valid_mask.sum() > 0:
-                valid_logits = logits_flat[valid_mask]
-                valid_labels = y_flat[valid_mask].long()
+            if y_batch.numel() > 0:
+                valid_logits = logits_flat
+                valid_labels = y_batch.long()
 
+                # Get true class logits and max other class logits
                 y_onehot = F.one_hot(
                     valid_labels, num_classes=valid_logits.size(-1)
                 ).float()
                 true_logits = torch.sum(y_onehot * valid_logits, dim=1)
                 max_other_logits = torch.max((1 - y_onehot) * valid_logits, dim=1)[0]
 
+                # DRO margin constraint
                 margins = true_logits - max_other_logits - lambda_param * self.kappa
                 label_uncertainty_term = torch.relu(margins).mean()
+
+                # Penalty for lambda constraint
                 penalty = torch.relu(l2_norm - lambda_param).pow(2)
 
                 loss += self.kappacoef * label_uncertainty_term
                 loss += self.wasserstein * lambda_param
                 loss += 500 * penalty
 
+            # Backpropagation
             loss.backward()
             torch.nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=1.0)
             self.optimizer.step()
             optimizer_lambda.step()
 
+            # Projection to maintain stability
             with torch.no_grad():
                 lambda_param_raw.data = torch.log(
                     torch.max(torch.exp(lambda_param_raw), l2_norm + 1e-6)
@@ -320,6 +329,7 @@ class RNNDataset(Dataset):
 def collate_fn(batch):
     X_batch, y_batch, lengths, subject_ids = zip(*batch)
     lengths = torch.tensor(lengths)
+
     X_batch = pad_sequence(X_batch, batch_first=True)
-    y_batch = pad_sequence(y_batch, batch_first=True)
+    y_batch = torch.cat(y_batch)
     return X_batch, y_batch, lengths, subject_ids
