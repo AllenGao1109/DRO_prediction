@@ -1,0 +1,143 @@
+table,dataset,respondent,variable,question,response,autoregressive
+abcd_aces,Adverse childhood experiences (ACEs),Parent,total_core,Adverse childhood experiences,Continuous,FALSE
+abcd_y_lt,Age and sex,Parent,interview_age,Age,Continuous,FALSE
+mh_p_cbcl,Child Behavior Checklist (CBCL),Parent,cbcl_scr_syn_aggressive_t,Aggressive cbcl syndrome scale (t-score),Continuous,TRUE
+mh_p_cbcl,Child Behavior Checklist (CBCL),Parent,cbcl_scr_syn_anxdep_t,Anxdep cbcl syndrome scale (t-score),Continuous,TRUE
+mh_p_cbcl,Child Behavior Checklist (CBCL),Parent,cbcl_scr_syn_attention_t,Attention cbcl syndrome scale (t-score),Continuous,TRUE
+mh_p_cbcl,Child Behavior Checklist (CBCL),Parent,cbcl_scr_syn_rulebreak_t,Rulebreak cbcl syndrome scale (t-score),Continuous,TRUE
+mh_p_cbcl,Child Behavior Checklist (CBCL),Parent,cbcl_scr_syn_social_t,Social cbcl syndrome scale (t-score),Continuous,TRUE
+mh_p_cbcl,Child Behavior Checklist (CBCL),Parent,cbcl_scr_syn_somatic_t,Somatic cbcl syndrome scale (t-score),Continuous,TRUE
+mh_p_cbcl,Child Behavior Checklist (CBCL),Parent,cbcl_scr_syn_thought_t,Thought cbcl syndrome scale (t-score),Continuous,TRUE
+mh_p_cbcl,Child Behavior Checklist (CBCL),Parent,cbcl_scr_syn_withdep_t,Withdep cbcl syndrome scale (t-score),Continuous,TRUE
+abcd_p_demo,Demographics,Parent,acs_raked_propensity_score,Imputed raked propensity weight,Continuous,FALSE
+abcd_p_demo,Demographics,Parent,demo_sex_v2,"What sex was the child assigned at birth, on the original birth certificate?",1 = Male; 2 = Female; 3 = Intersex-Male; 4 = Intersex-Female; 999 = Don't know; 777 = Refuse to answer,FALSE
+abcd_y_lt,Demographics,Parent,interview_date,Event year,Continuous,FALSE
+abcd_p_demo,Demographics,Parent,race_ethnicity,Race ethnicity (child),1 = White; 2 = Black; 3 = Hispanic; 4 = Asian; 5 = Other,FALSE
+abcd_y_lt,Demographics,Parent,site_id_l,Site id at each event,Continuous,FALSE
+mri_y_dti_fa_fs_at,Diffusion tensor imaging,Youth,dmdtifp1_1,Average fractional anisotropy within dti atlas tract right fornix,Continuous,FALSE
+mri_y_dti_fa_fs_at,Diffusion tensor imaging,Youth,dmdtifp1_10,Average fractional anisotropy within dti atlas tract left anterior thalamic radiations,Continuous,FALSE
+mri_y_dti_fa_fs_at,Diffusion tensor imaging,Youth,dmdtifp1_11,Average fractional anisotropy within dti atlas tract right uncinate,Continuous,FALSE
+mri_y_dti_fa_fs_at,Diffusion tensor imaging,Youth,dmdtifp1_12,Average fractional anisotropy within dti atlas tract left uncinate,Continuous,FALSE
+mri_y_dti_fa_fs_at,Diffusion tensor imaging,Youth,dmdtifp1_13,Average fractional anisotropy within dti atlas tract right inferior longitudinal fasiculus,Continuous,FALSE
+mri_y_dti_fa_fs_at,Diffusion tensor imaging,Youth,dmdtifp1_14,Average fractional anisotropy within dti atlas tract left inferior longitudinal fasiculus,Continuous,FALSE
+mri_y_dti_fa_fs_at,Diffusion tensor imaging,Youth,dmdtifp1_17,Average fractional anisotropy within dti atlas tract foreceps major,Continuous,FALSE
+mri_y_dti_fa_fs_at,Diffusion tensor imaging,Youth,dmdtifp1_18,Average fractional anisotropy within dti atlas tract foreceps minor,Continuous,FALSE
+mri_y_dti_fa_fs_at,Diffusion tensor imaging,Youth,dmdtifp1_19,Average fractional anisotropy within dti atlas tract corpus callosum,Continuous,FALSE
+mri_y_dti_fa_fs_at,Diffusion tensor imaging,Youth,dmdtifp1_2,Average fractional anisotropy within dti atlas tract left fornix,Continuous,FALSE
+mri_y_dti_fa_fs_at,Diffusion tensor imaging,Youth,dmdtifp1_20,Average fractional anisotropy within dti atlas tract right superior longitudinal fasiculus,Continuous,FALSE
+mri_y_dti_fa_fs_at,Diffusion tensor imaging,Youth,dmdtifp1_21,Average fractional anisotropy within dti atlas tract left superior longitudinal fasiculus,Continuous,FALSE
+mri_y_dti_fa_fs_at,Diffusion tensor imaging,Youth,dmdtifp1_26,Average fractional anisotropy within dti atlas tract right superior corticostriate,Continuous,FALSE
+mri_y_dti_fa_fs_at,Diffusion tensor imaging,Youth,dmdtifp1_27,Average fractional anisotropy within dti atlas tract left superior corticostriate,Continuous,FALSE
+mri_y_dti_fa_fs_at,Diffusion tensor imaging,Youth,dmdtifp1_3,Average fractional anisotropy within dti atlas tract right cingulate cingulum,Continuous,FALSE
+mri_y_dti_fa_fs_at,Diffusion tensor imaging,Youth,dmdtifp1_4,Average fractional anisotropy within dti atlas tract left cingulate cingulum,Continuous,FALSE
+mri_y_dti_fa_fs_at,Diffusion tensor imaging,Youth,dmdtifp1_5,Average fractional anisotropy within dti atlas tract right parahippocampal cingulum,Continuous,FALSE
+mri_y_dti_fa_fs_at,Diffusion tensor imaging,Youth,dmdtifp1_6,Average fractional anisotropy within dti atlas tract left parahippocampal cingulum,Continuous,FALSE
+mri_y_dti_fa_fs_at,Diffusion tensor imaging,Youth,dmdtifp1_7,Average fractional anisotropy within dti atlas tract right corticospinal/pyramidal,Continuous,FALSE
+mri_y_dti_fa_fs_at,Diffusion tensor imaging,Youth,dmdtifp1_8,Average fractional anisotropy within dti atlas tract left corticospinal/pyramidal,Continuous,FALSE
+mri_y_dti_fa_fs_at,Diffusion tensor imaging,Youth,dmdtifp1_9,Average fractional anisotropy within dti atlas tract right anterior thalamic radiations,Continuous,FALSE
+ce_p_fes,Family conflict,Parent,fam_enviro1_p,We fight a lot in our family,1 = True; 0 = False,FALSE
+ce_p_fes,Family conflict,Parent,fam_enviro2r_p,Family members rarely become openly angry,0 = True; 1 = False,FALSE
+ce_p_fes,Family conflict,Parent,fam_enviro3_p,Family members sometimes get so angry they throw things,1 = True; 0 = False,FALSE
+ce_p_fes,Family conflict,Parent,fam_enviro4r_p,Family members hardly ever lose their tempers,0 = True; 1 = False,FALSE
+ce_p_fes,Family conflict,Parent,fam_enviro5_p,Family members often criticize each other,1 = True; 0 = False,FALSE
+ce_p_fes,Family conflict,Parent,fam_enviro6_p,Family members sometimes hit each other,1 = True; 0 = False,FALSE
+ce_p_fes,Family conflict,Parent,fam_enviro7r_p,"If there is a disagreement in our family, we try hard to smooth things over and keep the peace",0 = True; 1 = False,FALSE
+ce_p_fes,Family conflict,Parent,fam_enviro8_p,Family members often try to one-up or outdo each other,1 = True; 0 = False,FALSE
+ce_p_fes,Family conflict,Parent,fam_enviro9r_p,"In our family, we believe you don't ever get anywhere by raising your voice",0 = True; 1 = False,FALSE
+ce_y_fes,Family conflict,Youth,fes_youth_q1,We fight a lot in our family,1 = True; 0 = False,FALSE
+ce_y_fes,Family conflict,Youth,fes_youth_q2,Family members rarely become openly angry,0 = True; 1 = False,FALSE
+ce_y_fes,Family conflict,Youth,fes_youth_q3,Family members sometimes get so angry they throw things,1 = True; 0 = False,FALSE
+ce_y_fes,Family conflict,Youth,fes_youth_q4,Family members hardly ever lose their tempers,0 = True; 1 = False,FALSE
+ce_y_fes,Family conflict,Youth,fes_youth_q5,Family members often criticize each other,1 = True; 0 = False,FALSE
+ce_y_fes,Family conflict,Youth,fes_youth_q6,Family members sometimes hit each other,1 = True; 0 = False,FALSE
+ce_y_fes,Family conflict,Youth,fes_youth_q7,"If there's a disagreement in our family, we try hard to smooth things over and keep the peace",0 = True; 1 = False,FALSE
+ce_y_fes,Family conflict,Youth,fes_youth_q8,Family members often try to one-up or outdo each other,1 = True; 0 = False,FALSE
+ce_y_fes,Family conflict,Youth,fes_youth_q9,"In our family, we believe you don't ever get anywhere by raising your voice",0 = True; 1 = False,FALSE
+mh_p_fhx,Family mental health history,Parent,fam_history_10_yes_no,"Has any blood relative of your child ever had any other problems with their nerves, or had a nervous breakdown",1 = Yes; 0 = No; 999 = Don't know ; 7 = Refuse to answer,FALSE
+mh_p_fhx,Family mental health history,Parent,fam_history_11_yes_no,"Has any blood relative of your child ever been to a doctor or a counselor about any emotional  or mental problems, or problems with alcohol or drugs",1 = Yes; 0 = No; 999 = Don't know ; 7 = Refuse to answer,FALSE
+mh_p_fhx,Family mental health history,Parent,fam_history_5_yes_no,"Has any blood relative of your child ever had any problems due to drugs, such as: marital  separation or divorce; laid off or fired from work; arrests or duis; drugs harmed their health; in a drug treatment program; suspended or expelled from school 2 or more times; isolated self from family, caused arguments or were high a lot",1 = Yes; 0 = No; 999 = Don't know ; 7 = Refuse to answer,FALSE
+mh_p_fhx,Family mental health history,Parent,fam_history_6_yes_no,"Has any blood relative of your child ever suffered from depression, that is, have they felt so low for a period of at least two weeks that they hardly ate or slept or couldn't work or do whatever they usually do",1 = Yes; 0 = No; 999 = Don't know ; 7 = Refuse to answer,FALSE
+mh_p_fhx,Family mental health history,Parent,fam_history_7_yes_no,Has any blood relative of your child ever had a period of time when others were concerned  because they suddenly became more active day and night and seemed not to need any sleep and talked much more than usual for them,1 = Yes; 0 = No; 999 = Don't know ; 7 = Refuse to answer,FALSE
+mh_p_fhx,Family mental health history,Parent,fam_history_8_yes_no,Has any blood relative of your child ever had a period lasting six months when they saw visions or heard voices or thought people were spying on them or plotting against them,1 = Yes; 0 = No; 999 = Don't know ; 7 = Refuse to answer,FALSE
+mh_p_fhx,Family mental health history,Parent,fam_history_9_yes_no,"Has any blood relative of your child been the kind of person who never holds a job for long, or  gets into fights, or gets into trouble with the police from time to time, or had any trouble with the law as a child or an adult",1 = Yes; 0 = No; 999 = Don't know ; 7 = Refuse to answer,FALSE
+mh_p_fhx,Family mental health history,Parent,famhx_4_p,"Has any blood relative of your child ever had any problems due to alcohol, such as: marital  separation or divorce; laid off or fired from work; arrests or duis; alcohol harmed their health; in an alcohol treatment program; suspended or expelled from school 2 or more times; isolated self from family, caused arguments or were drunk a lot",1 = Yes; 0 = No; 999 = Don't know ; 7 = Refuse to answer,FALSE
+mh_p_cbcl,Follow-up event,Parent,eventname,Follow-up event,Continuous,TRUE
+ce_p_nsc,Neighborhood safety,Parent,neighborhood1r_p,"I feel safe walking in my neighborhood, day or night",1 = Strongly Disagree; 2 = Disagree; 3 = Neutral (neither agree nor disagree); 4 = Agree; 5 = Strongly Agree,FALSE
+ce_p_nsc,Neighborhood safety,Parent,neighborhood2r_p,Violence is not a problem in my neighborhood,1 = Strongly Disagree; 2 = Disagree; 3 = Neutral (neither agree nor disagree); 4 = Agree; 5 = Strongly Agree,FALSE
+ce_p_nsc,Neighborhood safety,Parent,neighborhood3r_p,My neighborhood is safe from crime,1 = Strongly Disagree; 2 = Disagree; 3 = Neutral (neither agree nor disagree); 4 = Agree; 5 = Strongly Agree,FALSE
+ce_y_nsc,Neighborhood safety,Youth,neighborhood_crime_y,My neighborhood is safe from crime,1 = Strongly Disagree; 2 = Disagree; 3 = Neutral (neither agree nor disagree); 4 = Agree; 5 = Strongly Agree,FALSE
+ce_y_pm,Parental monitoring,Youth,parent_monitor_q1_y,How often do your parents/guardians know where you are,1 = Never; 2 = Almost Never; 3 = Sometimes; 4 = Often; 5 = Always or Almost Always,FALSE
+ce_y_pm,Parental monitoring,Youth,parent_monitor_q2_y,How often do your parents know who you are with when you are not at school and away from home,1 = Never; 2 = Almost Never; 3 = Sometimes; 4 = Often; 5 = Always or Almost Always,FALSE
+ce_y_pm,Parental monitoring,Youth,parent_monitor_q3_y,"If you are at home when your parents or guardians are not, how often do you know how to get in touch with them",1 = Never; 2 = Almost Never; 3 = Sometimes; 4 = Often; 5 = Always or Almost Always,FALSE
+ce_y_pm,Parental monitoring,Youth,parent_monitor_q4_y,"How often do you talk to your parent or guardian about your plans for the coming day, such as your plans about what will happen at school or what you are going to do with friends",1 = Never; 2 = Almost Never; 3 = Sometimes; 4 = Often; 5 = Always or Almost Always,FALSE
+ce_y_pm,Parental monitoring,Youth,parent_monitor_q5_y,"In an average week, how many times do you and your parents/guardians, eat dinner together",1 = Never; 2 = Almost Never; 3 = Sometimes; 4 = Often; 5 = Always or Almost Always,FALSE
+su_p_pr,Parental rules,Parent,parent_rules_q1,Which statement best describes the rules for your child's drinking in your house,1 = My child is not allowed to drink under any circumstances; 2 = My child is allowed to drink at home but only on special occasions and under parent supervision; 3 = My child can have a drink when he; 4 = My child can drink at home whenever he; 5 = I don't set rules about my child's drinking; 6 = I haven't made rules yet about my child drinking,FALSE
+su_p_pr,Parental rules,Parent,parent_rules_q1a,Are these the same rules for all family members,"1 = No, applies only to children, not teen or adults; 2 = No, applies only to children and teen, not adults; 3 = Yes",FALSE
+su_p_pr,Parental rules,Parent,parent_rules_q2,Do you have penalties for violating family rules about drinking,1 = Yes; 0 = No,FALSE
+su_p_pr,Parental rules,Parent,parent_rules_q4,What are the family rules about smoking cigarettes for your son/daughter,1 = Not allowed to smoke under any circumstances; 2 = Not allowed to smoke in home - no family rules outside home; no hay reglas familiares con respecto a fumar fuera de la casa; 3 = Allowed to smoke in designated areas at home Tiene permitido fumar en; 4 = Allowed to smoke anywhere; 5 = I don't set rules about smoking cigarettes; 6 = I haven't made rules yet about my child smoking cigarettes,FALSE
+su_p_pr,Parental rules,Parent,parent_rules_q5,Are these the same rules for all family members,"1 = No, applies only to children, not teen or adults; 2 = No, applies only to children and teen, not adults; 3 = Yes",FALSE
+su_p_pr,Parental rules,Parent,parent_rules_q6,Do you enforce penalties for violating family rules about smoking,0 = Never; 1 = Rarely; 2 = Sometimes; 3 = Often; 4 = I have not had to enforce these rules,FALSE
+su_p_pr,Parental rules,Parent,parent_rules_q7,What are the family rules about using marijuana for your son/daughter,1 = Not allowed to use marijuana under any circumstances; 2 = Not allowed to use marijuana in home - no family rules outside home; ; 3 = Allowed to use marijuana in home with permission; 4 = Allowed to use marijuana in home whenever he; 5 = I don't set rules about marijuana use; 6 = I haven't made rules yet about my child's marijuana use T,FALSE
+su_p_pr,Parental rules,Parent,parent_rules_q8,Are these the same rules for all family members,"1 = No, applies only to children, not teen or adults; 2 = No, applies only to children and teen, not adults; 3 = Yes",FALSE
+su_p_pr,Parental rules,Parent,parent_rules_q9,Do you enforce penalties for violating family rules about using marijuana,0 = Never; 1 = Rarely; 2 = Sometimes; 3 = Often; 4 = I have not had to enforce these rules,FALSE
+ce_p_psb,Prosocial behaviors,Parent,prosocial_q1_p,My child is… considerate of other people's feelings,0 = Not True; 1 = Somewhat True; 2 = Certainly True,FALSE
+ce_p_psb,Prosocial behaviors,Parent,prosocial_q2_p,"My child is… helpful if someone is hurt, upset, or feeling ill",0 = Not True; 1 = Somewhat True; 2 = Certainly True,FALSE
+ce_p_psb,Prosocial behaviors,Parent,prosocial_q3_p,"My child is… often offers to help others (parents, teachers, other children)",0 = Not True; 1 = Somewhat True; 2 = Certainly True,FALSE
+ce_y_psb,Prosocial behaviors,Youth,prosocial_q1_y,I try to be nice to other people,0 = Not True; 1 = Somewhat True; 2 = Certainly True,FALSE
+ce_y_psb,Prosocial behaviors,Youth,prosocial_q2_y,"I am helpful if someone is hurt, upset, or feeling sick",0 = Not True; 1 = Somewhat True; 2 = Certainly True,FALSE
+ce_y_psb,Prosocial behaviors,Youth,prosocial_q3_y,"I often offer to help others (parents, teachers, children)",0 = Not True; 1 = Somewhat True; 2 = Certainly True,FALSE
+mri_y_rsfmr_cor_gp_gp,Resting functional MRI,Youth,rsfmri_c_ngd_cgc_ngd_cgc,Average correlation between cingulo-opercular network and cingulo-opercular network,Continuous,FALSE
+mri_y_rsfmr_cor_gp_gp,Resting functional MRI,Youth,rsfmri_c_ngd_cgc_ngd_dt,Average correlation between cingulo-opercular network and default network,Continuous,FALSE
+mri_y_rsfmr_cor_gp_gp,Resting functional MRI,Youth,rsfmri_c_ngd_dt_ngd_dt,Average correlation between default network and default network,Continuous,FALSE
+mri_y_rsfmr_cor_gp_gp,Resting functional MRI,Youth,rsfmri_c_ngd_dt_ngd_fo,Average correlation between default network and fronto-parietal network,Continuous,FALSE
+mri_y_rsfmr_cor_gp_gp,Resting functional MRI,Youth,rsfmri_c_ngd_fo_ngd_cgc,Average correlation between fronto-parietal network and cingulo-opercular network,Continuous,FALSE
+mri_y_rsfmr_cor_gp_gp,Resting functional MRI,Youth,rsfmri_c_ngd_fo_ngd_fo,Average correlation between fronto-parietal network and fronto-parietal network,Continuous,FALSE
+ce_y_srpf,School risk and protective factors,Youth,school_10_y,There are lots of chances to be part of class discussions or activities,1 = NO!; 2 = no; 3 = yes; 4 = YES!,FALSE
+ce_y_srpf,School risk and protective factors,Youth,school_12_y,"In general, i like school a lot",1 = NO!; 2 = no; 3 = yes; 4 = YES!,FALSE
+ce_y_srpf,School risk and protective factors,Youth,school_15_y,"Usually, school bores me",1 = NO!; 2 = no; 3 = yes; 4 = YES!,FALSE
+ce_y_srpf,School risk and protective factors,Youth,school_17_y,Getting good grades is not so important to me,1 = NO!; 2 = no; 3 = yes; 4 = YES!,FALSE
+ce_y_srpf,School risk and protective factors,Youth,school_2_y,"In my school, students have lots of chances to help decide things like class activities and rules",1 = NO!; 2 = no; 3 = yes; 4 = YES!,FALSE
+ce_y_srpf,School risk and protective factors,Youth,school_3_y,I get along with my teachers,1 = NO!; 2 = no; 3 = yes; 4 = YES!,FALSE
+ce_y_srpf,School risk and protective factors,Youth,school_4_y,My teacher(s) notices when i am doing a good job and lets me know about it,1 = NO!; 2 = no; 3 = yes; 4 = YES!,FALSE
+ce_y_srpf,School risk and protective factors,Youth,school_5_y,"There are lots of chances for students in my school to get involved in sports, clubs, or other school activities outside of class",1 = NO!; 2 = no; 3 = yes; 4 = YES!,FALSE
+ce_y_srpf,School risk and protective factors,Youth,school_6_y,I feel safe at my school,1 = NO!; 2 = no; 3 = yes; 4 = YES!,FALSE
+ce_y_srpf,School risk and protective factors,Youth,school_7_y,The school lets my parents know when i have done something well,1 = NO!; 2 = no; 3 = yes; 4 = YES!,FALSE
+ce_y_srpf,School risk and protective factors,Youth,school_8_y,I like school because i do well in class,1 = NO!; 2 = no; 3 = yes; 4 = YES!,FALSE
+ce_y_srpf,School risk and protective factors,Youth,school_9_y,I feel i'm just as smart as other kids my age,1 = NO!; 2 = no; 3 = yes; 4 = YES!,FALSE
+nt_y_st,Screentime,Youth,screen13_y,How often do you play mature-rated video games (e,0 = Never; 1 = Once in a while; 2 = Regularly; 3 = All the time,FALSE
+nt_y_st,Screentime,Youth,screen14_y,How often do you watch r-rated movies,0 = Never; 1 = Once in a while; 2 = Regularly; 3 = All the time,FALSE
+ph_p_sds,Sleep disturbances,Parent,sleepdisturb10_p,The child wakes up more than twice per night,1 = Never; 2 = Occasionally (once or twice per month or less); 3 = Sometimes (once or twice per week); 4 = Often (3 or 5 times per week); 5 = Always (daily),FALSE
+ph_p_sds,Sleep disturbances,Parent,sleepdisturb11_p,"After waking up in the night, the child has difficulty to fall asleep again",1 = Never; 2 = Occasionally (once or twice per month or less); 3 = Sometimes (once or twice per week); 4 = Often (3 or 5 times per week); 5 = Always (daily),FALSE
+ph_p_sds,Sleep disturbances,Parent,sleepdisturb12_p,The child has frequent twitching or jerking of legs while asleep or often changes position during the night or kicks the covers off the bed,1 = Never; 2 = Occasionally (once or twice per month or less); 3 = Sometimes (once or twice per week); 4 = Often (3 or 5 times per week); 5 = Always (daily),FALSE
+ph_p_sds,Sleep disturbances,Parent,sleepdisturb13_p,The child has difficulty in breathing during the night,1 = Never; 2 = Occasionally (once or twice per month or less); 3 = Sometimes (once or twice per week); 4 = Often (3 or 5 times per week); 5 = Always (daily),FALSE
+ph_p_sds,Sleep disturbances,Parent,sleepdisturb14_p,The child gasps for breaths or is unable to breathe during sleep,1 = Never; 2 = Occasionally (once or twice per month or less); 3 = Sometimes (once or twice per week); 4 = Often (3 or 5 times per week); 5 = Always (daily),FALSE
+ph_p_sds,Sleep disturbances,Parent,sleepdisturb15_p,The child snores,1 = Never; 2 = Occasionally (once or twice per month or less); 3 = Sometimes (once or twice per week); 4 = Often (3 or 5 times per week); 5 = Always (daily),FALSE
+ph_p_sds,Sleep disturbances,Parent,sleepdisturb16_p,The child sweats excessively during the night,1 = Never; 2 = Occasionally (once or twice per month or less); 3 = Sometimes (once or twice per week); 4 = Often (3 or 5 times per week); 5 = Always (daily),FALSE
+ph_p_sds,Sleep disturbances,Parent,sleepdisturb17_p,You have observed the child sleepwalking,1 = Never; 2 = Occasionally (once or twice per month or less); 3 = Sometimes (once or twice per week); 4 = Often (3 or 5 times per week); 5 = Always (daily),FALSE
+ph_p_sds,Sleep disturbances,Parent,sleepdisturb18_p,You have observed the child talking in their sleep,1 = Never; 2 = Occasionally (once or twice per month or less); 3 = Sometimes (once or twice per week); 4 = Often (3 or 5 times per week); 5 = Always (daily),FALSE
+ph_p_sds,Sleep disturbances,Parent,sleepdisturb19_p,The child grinds their teeth during sleep,1 = Never; 2 = Occasionally (once or twice per month or less); 3 = Sometimes (once or twice per week); 4 = Often (3 or 5 times per week); 5 = Always (daily),FALSE
+ph_p_sds,Sleep disturbances,Parent,sleepdisturb1_p,How many hours of sleep does your child get on most nights,1 = 9-11 hours; 2 = 8-9 hours; 3 = 7-8 hours; 4 = 5-7 hours; 5 = Less than 5 hours,FALSE
+ph_p_sds,Sleep disturbances,Parent,sleepdisturb20_p,"The child wakes from sleep screaming or confused so you cannot seem to get through to they, but has no memory of these events the next morning",1 = Never; 2 = Occasionally (once or twice per month or less); 3 = Sometimes (once or twice per week); 4 = Often (3 or 5 times per week); 5 = Always (daily),FALSE
+ph_p_sds,Sleep disturbances,Parent,sleepdisturb21_p,The child has nightmares which they don't remember the next day,1 = Never; 2 = Occasionally (once or twice per month or less); 3 = Sometimes (once or twice per week); 4 = Often (3 or 5 times per week); 5 = Always (daily),FALSE
+ph_p_sds,Sleep disturbances,Parent,sleepdisturb22_p,The child is unusuallly difficult to wake up in the morning,1 = Never; 2 = Occasionally (once or twice per month or less); 3 = Sometimes (once or twice per week); 4 = Often (3 or 5 times per week); 5 = Always (daily),FALSE
+ph_p_sds,Sleep disturbances,Parent,sleepdisturb23_p,The child awakes in the morning feeling tired,1 = Never; 2 = Occasionally (once or twice per month or less); 3 = Sometimes (once or twice per week); 4 = Often (3 or 5 times per week); 5 = Always (daily),FALSE
+ph_p_sds,Sleep disturbances,Parent,sleepdisturb24_p,The child feels unable to move when waking up in the morning,1 = Never; 2 = Occasionally (once or twice per month or less); 3 = Sometimes (once or twice per week); 4 = Often (3 or 5 times per week); 5 = Always (daily),FALSE
+ph_p_sds,Sleep disturbances,Parent,sleepdisturb25_p,The child experiences daytime sleepiness,1 = Never; 2 = Occasionally (once or twice per month or less); 3 = Sometimes (once or twice per week); 4 = Often (3 or 5 times per week); 5 = Always (daily),FALSE
+ph_p_sds,Sleep disturbances,Parent,sleepdisturb26_p,The child falls asleep suddenly in inappropriate situations,1 = Never; 2 = Occasionally (once or twice per month or less); 3 = Sometimes (once or twice per week); 4 = Often (3 or 5 times per week); 5 = Always (daily),FALSE
+ph_p_sds,Sleep disturbances,Parent,sleepdisturb2_p,How long after going to bed does your child usually fall asleep,1 = Less than 15 minutes; 2 = 15-30 minutes 15 a 30 minutos; 3 = 30-45 minutes; 4 = 45-60 minutes; 5 = More than 60 minutes,FALSE
+ph_p_sds,Sleep disturbances,Parent,sleepdisturb3_p,The child goes to bed reluctantly,1 = Never; 2 = Occasionally (once or twice per month or less); 3 = Sometimes (once or twice per week); 4 = Often (3 or 5 times per week); 5 = Always (daily),FALSE
+ph_p_sds,Sleep disturbances,Parent,sleepdisturb4_p,The child has difficulty getting to sleep at night,1 = Never; 2 = Occasionally (once or twice per month or less); 3 = Sometimes (once or twice per week); 4 = Often (3 or 5 times per week); 5 = Always (daily),FALSE
+ph_p_sds,Sleep disturbances,Parent,sleepdisturb5_p,The child feels anxious or afraid when falling asleep,1 = Never; 2 = Occasionally (once or twice per month or less); 3 = Sometimes (once or twice per week); 4 = Often (3 or 5 times per week); 5 = Always (daily),FALSE
+ph_p_sds,Sleep disturbances,Parent,sleepdisturb6_p,The child startles or jerks parts of the body while falling asleep,1 = Never; 2 = Occasionally (once or twice per month or less); 3 = Sometimes (once or twice per week); 4 = Often (3 or 5 times per week); 5 = Always (daily),FALSE
+ph_p_sds,Sleep disturbances,Parent,sleepdisturb7_p,The child shows repetitive actions such as rocking or head banging while falling asleep,1 = Never; 2 = Occasionally (once or twice per month or less); 3 = Sometimes (once or twice per week); 4 = Often (3 or 5 times per week); 5 = Always (daily),FALSE
+ph_p_sds,Sleep disturbances,Parent,sleepdisturb8_p,The child experiences vivid dream-like scenes while falling asleep,1 = Never; 2 = Occasionally (once or twice per month or less); 3 = Sometimes (once or twice per week); 4 = Often (3 or 5 times per week); 5 = Always (daily),FALSE
+ph_p_sds,Sleep disturbances,Parent,sleepdisturb9_p,The child sweats excessively while falling asleep,1 = Never; 2 = Occasionally (once or twice per month or less); 3 = Sometimes (once or twice per week); 4 = Often (3 or 5 times per week); 5 = Always (daily),FALSE
+led_l_adi,Socio-economic status,Parent,adi_percentile,Area deprivation index percentile,Continuous,FALSE
+abcd_p_demo,Socio-economic status,Parent,demo_comb_income_v2,Household income,"1= Less than $5,000; 2=$5,000 through $11,999; 3=$12,000 through $15,999; 4=$16,000 through $24,999; 5=$25,000 through $34,999; 6=$35,000 through $49,999; 7=$50,000 through $74,999; 8= $75,000 through $99,999; 9=$100,000 through $199,999; 10=$200,000 and greater 999 = Don't know ; 777 = Refuse to answer ",FALSE
+abcd_p_demo,Socio-economic status,Parent,parent_highest_education,Parent highest education,Continuous,FALSE
+mri_y_tfmr_mid_alrvn_dsk,Task-based functional MRI,Youth,tfmri_ma_alrvn_b_cds_bkslh,Beta weight for mid all anticipation of large reward versus neutral contrast in aparc roi lh-bankssts,Continuous,FALSE
+mri_y_tfmr_mid_alrvn_dsk,Task-based functional MRI,Youth,tfmri_ma_alrvn_b_cds_bksrh,Beta weight for mid all anticipation of large reward versus neutral contrast in aparc roi rh-bankssts,Continuous,FALSE
+mri_y_tfmr_nback_2b_dsk,Task-based functional MRI,Youth,tfmri_nback_all_339,Beta weight for nback all 2 back contrast in aparc roi lh-bankssts,Continuous,FALSE
+mri_y_tfmr_nback_2b_dsk,Task-based functional MRI,Youth,tfmri_nback_all_373,Beta weight for nback all 2 back contrast in aparc roi rh-bankssts,Continuous,FALSE
+mri_y_tfmr_sst_csvcg_dsk,Task-based functional MRI,Youth,tfmri_sacsvcg_bcdk_bktslh,Beta weight for sst all correct stop versus correct go contrast in aparc roi lh-bankssts,Continuous,FALSE
+mri_y_tfmr_sst_csvcg_dsk,Task-based functional MRI,Youth,tfmri_sacsvcg_bcdk_bktsrh,Beta weight for sst all correct stop versus correct go contrast in aparc roi rh-bankssts,Continuous,FALSE

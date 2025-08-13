@@ -1,9 +1,11 @@
+# @title Plot Functions (click to expand)
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
 from scipy.stats import ttest_rel
 from scipy.spatial.distance import cdist
+from sklearn.metrics import average_precision_score
 import ot
 
 
@@ -11,8 +13,6 @@ def plot_auc_demographic_comparison(
     trad_auc,
     reg_auc,
     dro_auc,
-    reg_white,
-    dro_white,
     white_proportion,
     black_proportion,
     asian_proportion,
@@ -20,7 +20,6 @@ def plot_auc_demographic_comparison(
     other_proportion,
     filtered_list,
     site_level_comparison=True,
-    white_only=False,
 ):
     def calculate_min_mean(column, n):
         return column.nsmallest(n).mean()
@@ -28,34 +27,26 @@ def plot_auc_demographic_comparison(
     n_values = list(range(1, len(filtered_list) + 1))
 
     # Section 1: AUC dataframe
-    if white_only:
-        comparison_df = pd.DataFrame(
-            [reg_white, dro_white], index=["Regularization", "DRO"]
-        )
-        hist_reg = reg_white
-        hist_dro = dro_white
-    else:
-        comparison_df = pd.DataFrame(
-            [trad_auc, reg_auc, dro_auc], index=["Traditional", "Regularization", "DRO"]
-        )
-        hist_reg = reg_auc
-        hist_dro = dro_auc
+
+    comparison_df = pd.DataFrame(
+        [trad_auc, reg_auc, dro_auc], index=["Baseline", "Regularization", "DRO"]
+    )
+    hist_reg = reg_auc
+    hist_dro = dro_auc
 
     mean_dro_plot = [calculate_min_mean(comparison_df.loc["DRO"], n) for n in n_values]
     mean_reg_plot = [
         calculate_min_mean(comparison_df.loc["Regularization"], n) for n in n_values
     ]
-    if not white_only:
-        mean_tra_plot = [
-            calculate_min_mean(comparison_df.loc["Traditional"], n) for n in n_values
-        ]
+    mean_tra_plot = [
+        calculate_min_mean(comparison_df.loc["Baseline"], n) for n in n_values
+    ]
 
     # Section 2: Minimum-N mean plot
     plt.figure(figsize=(8, 6))
     plt.plot(n_values, mean_dro_plot, label="DRO", marker="o")
     plt.plot(n_values, mean_reg_plot, label="REG", marker="s")
-    if not white_only:
-        plt.plot(n_values, mean_tra_plot, label="TRA", marker="x")
+    plt.plot(n_values, mean_tra_plot, label="BASELINE", marker="x")
     plt.xlabel("Worst N Sites", fontsize=12)
     plt.ylabel("AUC", fontsize=12)
     plt.title("Minimum-N Mean AUC Comparison", fontsize=14)
@@ -107,13 +98,12 @@ def plot_auc_demographic_comparison(
     ax2 = ax1.twinx()
     ax2.plot(x_indices, hist_dro, color="blue", label="DRO (AUC)", marker="o")
     ax2.plot(x_indices, hist_reg, color="orange", label="REG (AUC)", marker="s")
-    if not white_only:
-        ax2.plot(x_indices, trad_auc, color="black", label="TRA (AUC)", marker="^")
+    ax2.plot(x_indices, trad_auc, color="black", label="BASELINE (AUC)", marker="^")
     ax2.set_ylabel("AUC Scores", fontsize=12)
     ax2.set_ylim(0.5, 0.9)
     ax2.legend(loc="upper right", fontsize=10)
 
-    plt.xticks(ticks=x_indices)
+    plt.xticks(ticks=x_indices, labels=filtered_list)
     plt.title("AUC and Demographic Proportions Across Sites", fontsize=16)
     plt.tight_layout()
     plt.show()
@@ -170,10 +160,11 @@ def plot_auc_demographic_comparison(
             label="Diff" if i == 0 else "",
         )
     ax2.set_ylabel("AUC Diff (DRO - REG)", fontsize=12)
-    ax2.set_ylim(-0.05, 0.05)
+    ax2.set_ylim(-0.12, 0.12)
     ax2.legend(loc="upper right", fontsize=10)
 
     plt.title("AUC Difference and Demographic Proportions Across Sites", fontsize=16)
+    plt.xticks(ticks=x_indices, labels=filtered_list)
     plt.tight_layout()
     plt.show()
 
@@ -277,22 +268,12 @@ def plot_wasserstein_and_urban_vs_auc(
     ax1.legend(title="Legend", loc="upper left", fontsize=10)
 
     # Annotate site IDs
-    for i in range(len(filtered_list)):
-        ax1.text(
-            x_indices[i],
-            -5,
-            f"Site {filtered_list[i]}",
-            ha="center",
-            va="top",
-            fontsize=8,
-            rotation=45,
-        )
 
     # Plot AUC lines
     ax2 = ax1.twinx()
     ax2.plot(x_indices, hist_dro, color="blue", label="DRO (AUC)", marker="o")
     ax2.plot(x_indices, hist_reg, color="orange", label="REG (AUC)", marker="s")
-    ax2.plot(x_indices, hist_tra, color="black", label="TRA (AUC)", marker="^")
+    ax2.plot(x_indices, hist_tra, color="black", label="BASELINE (AUC)", marker="^")
     ax2.set_ylabel("AUC Scores", fontsize=12)
     ax2.set_ylim(0.6, 1.0)
     ax2.legend(loc="upper right", fontsize=10)
@@ -338,14 +319,14 @@ def plot_wasserstein_and_urban_vs_auc(
         )
 
     ax2.set_ylabel("AUC Difference (DRO - REG)", fontsize=12)
-    ax2.set_ylim(-0.05, 0.05)
+    ax2.set_ylim(-0.1, 0.1)
     ax2.legend(loc="upper right", fontsize=10)
     plt.tight_layout()
     plt.show()
 
     # --- Section 5: Paired t-test ---
     comparison_df = pd.DataFrame(
-        [trad_auc, reg_auc, dro_auc], index=["Traditional", "Regularization", "DRO"]
+        [trad_auc, reg_auc, dro_auc], index=["Baseline", "Regularization", "DRO"]
     )
     results = []
     rows = comparison_df.index.tolist()
@@ -377,3 +358,133 @@ def get_wasserstein(x, x_hat, y, y_hat, kappa):
     M_y = (y - y_hat.T) ** 2
     wasserstein_distance += ot.emd2(p_y, q_y, M_y) * kappa / 2
     return wasserstein_distance
+
+
+def plot_site_auc_with_population_bars(
+    trad_auc,
+    reg_auc,
+    dro_auc,
+    people_num,
+    site_labels,
+):
+    x_indices = np.arange(len(site_labels))
+    bar_width = 0.35
+
+    # Section 1: AUC line plot (left y-axis)
+    fig, ax1 = plt.subplots(figsize=(12, 6))
+    ax1.plot(x_indices, trad_auc, label="Baseline", marker="^", color="black")
+    ax1.plot(x_indices, reg_auc, label="Regularization", marker="s", color="orange")
+    ax1.plot(x_indices, dro_auc, label="DRO", marker="o", color="blue")
+    ax1.set_xlabel("Site", fontsize=12)
+    ax1.set_ylabel("AUC Score", fontsize=12)
+    ax1.set_ylim(0.3, 0.9)
+    ax1.set_xticks(x_indices, labels=site_labels)
+    ax1.legend(loc="upper left", fontsize=10)
+    ax1.grid(True)
+
+    # Section 2: People count bar chart (right y-axis)
+    ax2 = ax1.twinx()
+    ax2.bar(
+        x_indices,
+        people_num,
+        width=bar_width,
+        color="darkblue",
+        alpha=0.4,
+        label="Population Size",
+    )
+    ax2.set_ylabel("Number of People", fontsize=12, color="darkblue")
+    ax2.tick_params(axis="y", labelcolor="darkblue")
+    ax2.legend(loc="upper right", fontsize=10)
+    ax2.set_ylim(0, 2.3 * max(people_num))
+    plt.title("Site-wise AUC Comparison with Population Size", fontsize=14)
+    plt.tight_layout()
+    plt.show()
+
+    # Section 3: Paired t-tests
+    comparison_df = pd.DataFrame(
+        [trad_auc, reg_auc, dro_auc], index=["Baseline", "Regularization", "DRO"]
+    )
+    results = []
+    rows = comparison_df.index.tolist()
+    for i in range(len(rows)):
+        for j in range(i + 1, len(rows)):
+            t_stat, p_value = ttest_rel(
+                comparison_df.loc[rows[i]], comparison_df.loc[rows[j]]
+            )
+            results.append((f"{rows[i]} vs {rows[j]}", t_stat, p_value))
+
+    results_df = pd.DataFrame(results, columns=["Comparison", "t_stat", "p_value"])
+    print("\nPaired t-test Results:")
+    print(results_df)
+
+    return results_df
+
+
+def plot_site_ap_with_population_bars(
+    trad_ap,
+    reg_ap,
+    dro_ap,
+    people_num,
+    site_labels,
+):
+    """
+    Inputs:
+        trad_probs_by_site: list of arrays, each is predicted prob for trad model per site
+        reg_probs_by_site:  list of arrays, same for reg model
+        dro_probs_by_site:  list of arrays, same for dro model
+        y_true_by_site:     list of arrays, ground truth labels per site
+        people_num:         list of int, people count per site
+        site_labels:        list of str, site names
+    """
+
+    x_indices = np.arange(len(site_labels))
+    bar_width = 0.35
+
+    # Section 1: AP line plot (left y-axis)
+    fig, ax1 = plt.subplots(figsize=(12, 6))
+    ax1.plot(x_indices, trad_ap, label="Baseline", marker="^", color="black")
+    ax1.plot(x_indices, reg_ap, label="Regularization", marker="s", color="orange")
+    ax1.plot(x_indices, dro_ap, label="DRO", marker="o", color="blue")
+    ax1.set_xlabel("Site", fontsize=12)
+    ax1.set_ylabel("Average Precision (AP)", fontsize=12)
+    ax1.set_ylim(0.0, 1.05)
+    ax1.set_xticks(x_indices, labels=site_labels)
+    ax1.legend(loc="upper left", fontsize=10)
+    ax1.grid(True)
+
+    # Section 2: People count bar chart (right y-axis)
+    ax2 = ax1.twinx()
+    ax2.bar(
+        x_indices,
+        people_num,
+        width=bar_width,
+        color="darkblue",
+        alpha=0.4,
+        label="Population Size",
+    )
+    ax2.set_ylabel("Number of People", fontsize=12, color="darkblue")
+    ax2.tick_params(axis="y", labelcolor="darkblue")
+    ax2.legend(loc="upper right", fontsize=10)
+    ax2.set_ylim(0, 2.3 * max(people_num))
+    plt.title("Site-wise Average Precision with Population Size", fontsize=14)
+    plt.tight_layout()
+    plt.show()
+
+    # Section 3: Paired t-tests
+    comparison_df = pd.DataFrame(
+        [trad_ap, reg_ap, dro_ap], index=["Baseline", "Regularization", "DRO"]
+    )
+    results = []
+    rows = comparison_df.index.tolist()
+    for i in range(len(rows)):
+        for j in range(i + 1, len(rows)):
+            t_stat, p_value = ttest_rel(
+                comparison_df.loc[rows[i]], comparison_df.loc[rows[j]]
+            )
+            results.append((f"{rows[i]} vs {rows[j]}", t_stat, p_value))
+
+    results_df = pd.DataFrame(results, columns=["Comparison", "t_stat", "p_value"])
+    print("\nPaired t-test Results (AP):")
+    print(results_df)
+
+    return results_df
